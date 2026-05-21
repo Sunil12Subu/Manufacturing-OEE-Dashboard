@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manufacturing OEE Dashboard Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+        
+        h1 {
+            color: #2C5DBE;
+            border-bottom: 4px solid #2C5DBE;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+        
+        h2 {
+            color: #2C5DBE;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            font-size: 2em;
+            border-left: 5px solid #2ECC71;
+            padding-left: 15px;
+        }
+        
+        h3 {
+            color: #555;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+        
+        h4 {
+            color: #666;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+        
+        .toc {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            border-left: 4px solid #2C5DBE;
+        }
+        
+        .toc h2 {
+            margin-top: 0;
+            border-left: none;
+            padding-left: 0;
+        }
+        
+        .toc ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .toc li {
+            padding: 5px 0;
+        }
+        
+        .toc a {
+            color: #2C5DBE;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .toc a:hover {
+            color: #2ECC71;
+            text-decoration: underline;
+        }
+        
+        pre {
+            background: #f4f4f4;
+            border: 1px solid #ddd;
+            border-left: 4px solid #2C5DBE;
+            padding: 15px;
+            overflow-x: auto;
+            border-radius: 5px;
+            margin: 15px 0;
+            font-size: 14px;
+        }
+        
+        code {
+            font-family: 'Courier New', Courier, monospace;
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+        
+        pre code {
+            background: none;
+            padding: 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        
+        th {
+            background: #2C5DBE;
+            color: white;
+            font-weight: bold;
+        }
+        
+        tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+        
+        ul, ol {
+            margin: 15px 0;
+            padding-left: 30px;
+        }
+        
+        li {
+            margin: 8px 0;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+        }
+        
+        .highlight-box {
+            background: #e8f4f8;
+            border-left: 5px solid #2ECC71;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .definition {
+            background: #fff9e6;
+            border-left: 5px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        
+        .business-relevance {
+            background: #f0f8ff;
+            border-left: 5px solid #2C5DBE;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        
+        .color-badge {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border-radius: 5px;
+            vertical-align: middle;
+            margin-right: 10px;
+            border: 1px solid #ddd;
+        }
+        
+        hr {
+            border: none;
+            border-top: 2px solid #eee;
+            margin: 40px 0;
+        }
+        
+        .footer {
+            margin-top: 60px;
+            padding-top: 20px;
+            border-top: 2px solid #eee;
+            text-align: center;
+            color: #777;
+            font-style: italic;
+        }
+        
+        .relationship-box {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            border: 2px solid #2C5DBE;
+        }
+        
+        @media print {
+            body {
+                background: white;
+            }
+            .container {
+                box-shadow: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Manufacturing OEE Dashboard Documentation</h1>
+        
+        <div class="toc">
+            <h2>Table of Contents</h2>
+            <ul>
+                <li><a href="#data-model">Data Model & Table Relationships</a></li>
+                <li><a href="#dashboard-purpose">Dashboard Purpose</a></li>
+                <li><a href="#target-audience">Target Audience</a></li>
+                <li><a href="#color-standards">Color Standards</a></li>
+                <li><a href="#kpi-definitions">KPI Definitions & DAX Formulas</a>
+                    <ul style="padding-left: 20px;">
+                        <li><a href="#availability">Availability</a></li>
+                        <li><a href="#performance">Performance</a></li>
+                        <li><a href="#quality">Quality</a></li>
+                        <li><a href="#oee">Overall Equipment Effectiveness (OEE)</a></li>
+                        <li><a href="#six-big-loss">Six Big Loss Analysis</a></li>
+                        <li><a href="#top-downtime">Top Downtime Equipment</a></li>
+                        <li><a href="#equipment-performance">Equipment Performance</a></li>
+                        <li><a href="#kpi-summary">KPI Metric Summary</a></li>
+                        <li><a href="#shift-performance">Shift Performance</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <div class="section" id="data-model">
+            <h2>Data Model & Table Relationships</h2>
+            <h3>Relationship Mapping</h3>
+            <div class="relationship-box">
+DimDate → FactProductionLog
+DimDate → FactDowntime
+DimDate → FactQualityDefects
+
+DimTime → FactProductionLog
+
+DimShift → FactProductionLog
+DimShift → FactDowntime
+
+DimEquipment → FactProductionLog
+DimEquipment → FactDowntime
+DimEquipment → FactQualityDefects
+
+DimProduct → FactProductionLog
+
+DimDowntimeReason → FactDowntime
+
+DimDefectType → FactQualityDefects
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="section" id="color-standards">
+            <h2>Color Standards</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Element</th>
+                        <th>Color Preview</th>
+                        <th>Color Code</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Standard Green</td>
+                        <td><span class="color-badge" style="background: #2ECC71;"></span></td>
+                        <td>#2ECC71</td>
+                    </tr>
+                    <tr>
+                        <td>Standard Red</td>
+                        <td><span class="color-badge" style="background: #FF2C2C;"></span></td>
+                        <td>#FF2C2C</td>
+                    </tr>
+                    <tr>
+                        <td>Bar and Line Color</td>
+                        <td><span class="color-badge" style="background: #2C5DBE;"></span></td>
+                        <td>#2C5DBE</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <hr>
+
+        <div class="section" id="dashboard-purpose">
+            <h2>Dashboard Purpose</h2>
+            <div class="highlight-box">
+                <h3>Why this dashboard is required?</h3>
+                <p><strong>Because manufacturing loses money every single minute without knowing where and why.</strong></p>
+            </div>
+            
+            <h3>Key Questions This Dashboard Answers:</h3>
+            <ul>
+                <li>Are machines available?</li>
+                <li>Are they running at the right speed?</li>
+                <li>Are we producing good quality?</li>
+                <li>Where exactly are we losing time and money?</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <div class="section" id="target-audience">
+            <h2>Target Audience</h2>
+            
+            <h3>Consumer of this dashboard:</h3>
+            <ul>
+                <li>Plant Manager</li>
+                <li>Production Manager</li>
+                <li>Operations Head</li>
+                <li>Shift Supervisor</li>
+                <li>Continuous Improvement / Lean Team</li>
+            </ul>
+
+            <h3>Authority Level</h3>
+            <p>The person using this dashboard typically has authority to:</p>
+            <ul>
+                <li>Approve overtime</li>
+                <li>Add or remove operators</li>
+                <li>Change shift planning</li>
+                <li>Approve maintenance windows</li>
+                <li>Prioritize process improvement projects</li>
+                <li>Escalate issues to leadership</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <div class="section" id="kpi-definitions">
+            <h2>KPI Definitions & DAX Formulas</h2>
+
+            <div id="availability">
+                <h3>Availability</h3>
+                
+                <div class="definition">
+                    <h4>Definition</h4>
+                    <p>When we planned to run the machine, how much time did it ACTUALLY run?</p>
+                </div>
+
+                <div class="business-relevance">
+                    <h4>Business Relevance</h4>
+                    <p>Availability shows how often our machines were available for production instead of being stopped.</p>
+                </div>
+
+                <h4>DAX Formula: Availability %</h4>
+                <pre><code>Availability % = 
+VAR TotalPlannedTime = SUM(FactProductionLog[PlannedProductionTime_Minutes])
+VAR TotalDowntime = SUM(FactProductionLog[DownTime_Minutes])
+VAR TotalRunTime = TotalPlannedTime - TotalDowntime
+VAR Availability = 
+    IF(
+        TotalPlannedTime = 0,
+        BLANK(),
+        DIVIDE(TotalRunTime, TotalPlannedTime, 0)
+    )
+RETURN
+    Availability</code></pre>
+
+                <h4>DAX Formula: Availability vs Last Week Text</h4>
+                <pre><code>Availability vs Last Week Text = 
+
+VAR CurrentOEE = [Availability %]
+VAR LastWeekOEE = 
+    CALCULATE(
+        [Availability %],
+        DATEADD(DimDate[FullDate], -7, DAY)
+    )
+VAR Variance_ = CurrentOEE - LastWeekOEE
+
+VAR VariancePP = Variance_ * 100          -- convert to pp
+VAR Arrow =
+    IF (
+        Variance_ > 0,
+        UNICHAR(9650),   -- ▲
+        UNICHAR(9660)    -- ▼
+    )
+VAR Sign =
+    IF ( Variance_ > 0, "+", "" )
+RETURN
+    IF (
+        ISBLANK ( Variance_ ),
+        "No comparison data",
+        Arrow & " "
+            & Sign
+            & FORMAT ( VariancePP, "0.00" )
+            & " pp vs Last Week"
+    )</code></pre>
+
+                <h4>DAX Formula: Availability vs Last Week Color</h4>
+                <pre><code>Availability vs Last Week color = 
+
+VAR CurrentOEE = [Availability %]
+VAR LastWeekOEE = 
+    CALCULATE(
+        [Availability %],
+        DATEADD(DimDate[FullDate], -7, DAY)
+    )
+VAR Variance_ = CurrentOEE - LastWeekOEE
+return 
+IF( Variance_ > 0 ,1 ,0)</code></pre>
+            </div>
+
+            <hr>
+
+            <div id="performance">
+                <h3>Performance</h3>
+                
+                <div class="definition">
+                    <h4>Definition</h4>
+                    <p>This performance measure compares how much time production should have taken at ideal speed versus how much time it actually took.</p>
+                </div>
+
+                <h4>DAX Formula: Performance %</h4>
+                <pre><code>Performance % = 
+VAR TotalRunTime = SUM(FactProductionLog[ActualRunTime_Minutes]) * 60  // Convert to seconds
+VAR TotalUnits = SUM(FactProductionLog[TotalUnitsProduced])
+VAR IdealCycleTime = 
+    SUMX(
+        FactProductionLog,
+        FactProductionLog[TotalUnitsProduced] * FactProductionLog[IdealCycleTime_Seconds]
+    )
+VAR Performance = 
+    IF(
+        TotalRunTime = 0,
+        BLANK(),
+        DIVIDE(IdealCycleTime, TotalRunTime, 0)
+    )
+RETURN
+    Performance</code></pre>
+
+                <h4>DAX Formula: Performance vs Last Week Text</h4>
+                <pre><code>Performance vs Last Week Text = 
+
+VAR CurrentOEE = [Performance %]
+VAR LastWeekOEE = 
+    CALCULATE(
+        [Performance %],
+        DATEADD(DimDate[FullDate], -7, DAY)
+    )
+VAR Variance_ = CurrentOEE - LastWeekOEE
+
+VAR VariancePP = Variance_ * 100          -- convert to pp
+VAR Arrow =
+    IF (
+        Variance_ > 0,
+        UNICHAR(9650),   -- ▲
+        UNICHAR(9660)    -- a▼
+    )
+VAR Sign =
+    IF ( Variance_ > 0, "+", "" )
+RETURN
+    IF (
+        ISBLANK ( Variance_ ),
+        "No comparison data",
+        Arrow & " "
+            & Sign
+            & FORMAT ( VariancePP, "0.00" )
+            & " pp vs Last Week"
+    )</code></pre>
+
+                <h4>DAX Formula: Performance vs Last Week Color</h4>
+                <pre><code>Performance vs Last Week color = 
+
+VAR CurrentOEE = [Performance %]
+VAR LastWeekOEE = 
+    CALCULATE(
+        [Performance %],
+        DATEADD(DimDate[FullDate], -7, DAY)
+    )
+VAR Variance_ = CurrentOEE - LastWeekOEE
+return 
+IF( Variance_ > 0 ,1 ,0)</code></pre>
+            </div>
+
+            <hr>
+
+            <div id="quality">
+                <h3>Quality</h3>
+                
+                <div class="definition">
+                    <h4>Definition</h4>
+                    <p>Quality tells us what percentage of produced units are good and saleable.</p>
+                </div>
+
+                <div class="business-relevance">
+                    <h4>Business Relevance</h4>
+                    <p>Poor quality means we are producing waste. Quality shows how much of our production actually turns into revenue.</p>
+                </div>
+
+                <h4>DAX Formula: Quality %</h4>
+                <pre><code>Quality % = 
+VAR TotalUnits = SUM(FactProductionLog[TotalUnitsProduced])
+VAR GoodUnits = SUM(FactProductionLog[GoodUnitsProduced])
+VAR Quality = 
+    IF(
+        TotalUnits = 0,
+        BLANK(),
+        DIVIDE(GoodUnits, TotalUnits, 0)
+    )
+RETURN
+    Quality</code></pre>
+
+                <h4>DAX Formula: Quality vs Last Week Text</h4>
+                <pre><code>Quality vs Last Week Text = 
+
+VAR CurrentOEE = [Quality %]
+VAR LastWeekOEE = 
+    CALCULATE(
+        [Quality %],
+        DATEADD(DimDate[FullDate], -7, DAY)
+    )
+VAR Variance_ = CurrentOEE - LastWeekOEE
+
+VAR VariancePP = Variance_ * 100          -- convert to pp
+VAR Arrow =
+    IF (
+        Variance_ > 0,
+        UNICHAR(9650),   -- ▲
+        UNICHAR(9660)    -- ▼
+    )
+VAR Sign =
+    IF ( Variance_ > 0, "+", "" )
+RETURN
+    IF (
+        ISBLANK ( Variance_ ),
+        "No comparison data",
+        Arrow & " "
+            & Sign
+            & FORMAT ( VariancePP, "0.00" )
+            & " pp vs Last Week"
+    )</code></pre>
+
+                <h4>DAX Formula: Quality vs Last Week Color</h4>
+                <pre><code>Quality vs Last Week color = 
+
+VAR CurrentOEE = [Quality %]
+VAR LastWeekOEE = 
+    CALCULATE(
+        [Quality %],
+        DATEADD(DimDate[FullDate], -7, DAY)
+    )
+VAR Variance_ = CurrentOEE - LastWeekOEE
+return 
+IF( Variance_ > 0 ,1 ,0)</code></pre>
+            </div>
+
+            <hr>
+
+            <div id="oee">
+                <h3>Overall Equipment Effectiveness (OEE)</h3>
+                
+                <div class="definition">
+                    <h4>Definition</h4>
+                    <p>OEE shows how effectively we are using our machines to make good products at the right speed.</p>
+                </div>
+
+                <div class="business-relevance">
+                    <h4>Business Relevance</h4>
+                    <p>OEE is a single number that tells leadership how healthy production really is.</p>
+                    <p>Availability tells us if machines are running, Performance tells us how fast they run, and Quality tells us how much of that output actually makes money.</p>
+                </div>
+
+                <h4>DAX Formula: Overall OEE</h4>
+                <pre><code>Overall OEE = 
+VAR Availability = [Availability %]
+VAR Performance = [Performance %]
+VAR Quality = [Quality %]
+VAR OEE = Availability * Performance * Quality
+RETURN
+    IF(
+        ISBLANK(OEE),
+        BLANK(),
+        OEE
+    )</code></pre>
+
+                <h4>DAX Formula: OEE vs Last Week</h4>
+                <pre><code>OEE vs Last Week = 
+VAR CurrentOEE = [Overall OEE]
+VAR LastWeekOEE = 
+    CALCULATE(
+        [Overall OEE],
+        DATEADD(DimDate[FullDate], -7, DAY)
+    )
+VAR Variance_ = CurrentOEE - LastWeekOEE
+RETURN
+    IF(
+        ISBLANK(Variance_),
+        BLANK(),
+        Variance_
+    )</code></pre>
+
+                <h4>DAX Formula: OEE vs Last Week Text</h4>
+                <pre><code>OEE vs Last Week Text = 
+VAR Variance_ = [OEE vs Last Week]        -- decimal (e.g. 0.005)
+VAR VariancePP = Variance_ * 100          -- convert to pp
+VAR Arrow =
+    IF (
+        Variance_ > 0,
+        UNICHAR(9650),   -- ▲
+        UNICHAR(9660)    -- ▼
+    )
+VAR Sign =
+    IF ( Variance_ > 0, "+", "" )
+RETURN
+    IF (
+        ISBLANK ( Variance_ ),
+        "No comparison data",
+        Arrow & " "
+            & Sign
+            & FORMAT ( VariancePP, "0.00" )
+            & " pp vs Last Week"
+    )</code></pre>
+
+                <h4>DAX Formula: OEE vs Last Week Color</h4>
+                <pre><code>OEE vs Last Week color = IF( [OEE vs Last Week] > 0 ,1, 0)</code></pre>
+
+                <h4>OEE Trend for Last 30 Days</h4>
+                <p>From a 30-day trend, managers can see:</p>
+                <ul>
+                    <li>Is OEE stable?</li>
+                    <li>Are there frequent drops?</li>
+                    <li>Are there extreme variations between days?</li>
+                    <li>OEE is slowly dropping — let's act before month-end loss increases</li>
+                </ul>
+            </div>
+
+            <hr>
+
+            <div id="six-big-loss">
+                <h3>Six Big Loss Analysis</h3>
+                
+                <div class="definition">
+                    <h4>Definition</h4>
+                    <p>This chart tells us which loss categories are contributing the most to total downtime and how quickly those losses accumulate.</p>
+                </div>
+
+                <h4>DAX Formula: Total Downtime Minutes</h4>
+                <pre><code>Total Downtime Minutes = 
+SUM(FactDowntime[DurationMinutes])</code></pre>
+
+                <h4>DAX Formula: Cumulative Downtime %</h4>
+                <pre><code>Cumulative Downtime % = 
+VAR CurrentCategory = MAX(DimDowntimeReason[LossCategory])
+VAR CurrentDowntime = [Total Downtime Minutes]
+VAR AllCategories = 
+    ADDCOLUMNS(
+        SUMMARIZE(
+            ALLSELECTED(FactDowntime),
+            DimDowntimeReason[LossCategory]
+        ),
+        "@Downtime", [Total Downtime Minutes]
+    )
+VAR RankedCategories = 
+    ADDCOLUMNS(
+        AllCategories,
+        "@Rank", 
+        RANKX(
+            AllCategories,
+            [@Downtime],
+            ,
+            DESC,
+            DENSE
+        )
+    )
+VAR CurrentRank = 
+    MAXX(
+        FILTER(
+            RankedCategories,
+            [LossCategory] = CurrentCategory
+        ),
+        [@Rank]
+    )
+VAR CumulativeSum = 
+    SUMX(
+        FILTER(
+            RankedCategories,
+            [@Rank] <= CurrentRank
+        ),
+        [@Downtime]
+    )
+VAR TotalDowntime = [Total Downtime All Categories]
+RETURN
+    DIVIDE(CumulativeSum, TotalDowntime, 0)</code></pre>
+            </div>
+
+            <hr>
+
+            <div id="top-downtime">
+                <h3>Top Downtime Equipment</h3>
+                
+                <div class="definition">
+                    <h4>Definition</h4>
+                    <p>This Top Downtime Equipment analysis helps managers identify the single most damaging downtime event and prevent it from happening again.</p>
+                </div>
+
+                <h4>DAX Formula: Max Downtime (hrs)</h4>
+                <pre><code>Max Downtime (hrs) = MAX( FactDowntime[Durationhours])</code></pre>
+
+                <h4>DAX Formula: Reason for Max Downtime</h4>
+                <pre><code>Reason for Max Downtime = 
+VAR MaxEvent =
+    TOPN(
+        1,
+        FactDowntime,
+        FactDowntime[DurationHours], DESC
+    )
+RETURN
+    MAXX(
+        MaxEvent,
+        RELATED(DimDowntimeReason[ReasonDescription])
+)</code></pre>
+            </div>
+
+            <hr>
+
+            <div id="equipment-performance">
+                <h3>Equipment Performance</h3>
+
+                <h4>DAX Formula: Get_min_of_oee</h4>
+                <pre><code>Get_min_of_oee = MIN([Overall OEE], [OEE Target])</code></pre>
+
+                <h4>DAX Formula: target_not_met_oee</h4>
+                <pre><code>target_not_met_oee = if ( [Overall OEE] < [OEE Target], MAX([OEE Target], [Overall OEE]) - [Get_min_of_oee])</code></pre>
+
+                <h4>DAX Formula: Achived_oee</h4>
+                <pre><code>Achived_oee = if ( [Overall OEE] > [OEE Target], MAX([Overall OEE], [OEE Target])-[Get_min_of_oee])</code></pre>
+            </div>
+
+            <hr>
+
+            <div id="kpi-summary">
+                <h3>KPI Metric Summary</h3>
+
+                <h4>DAX Formula: KPI Selector</h4>
+                <pre><code>KPI Selector = 
+DATATABLE(
+    "Metric", STRING,
+    {
+        {"OEE Gap vs Target"},
+        {"Worst Shift"},
+        {"Lost Units"},
+        {"Top Downtime Reason"},
+        {"Availability Loss (hrs)"}
+    }
+)</code></pre>
+
+                <h4>Metric 1: OEE Gap vs Target</h4>
+                <div class="definition">
+                    <p><strong>Definition:</strong> How far we are above or below the expected OEE target.</p>
+                </div>
+                <pre><code>OEE Gap (pp) = [Overall OEE] - [OEE Target]</code></pre>
+
+                <h4>Metric 2: Worst Shift</h4>
+                <div class="definition">
+                    <p><strong>Definition:</strong> The shift with the lowest performance or highest losses.</p>
+                </div>
+                <pre><code>Worst Shift = 
+VAR T =
+    TOPN(
+        1,
+        VALUES(DimShift[ShiftName]),
+        [Overall OEE], ASC
+    )
+RETURN
+    MAXX(T, DimShift[ShiftName])</code></pre>
+
+                <h4>Metric 3: Lost Units</h4>
+                <div class="definition">
+                    <p><strong>Definition:</strong> Number of units not produced due to downtime, slow speed, or quality losses.</p>
+                </div>
+                <pre><code>Lost Units = 
+DIVIDE(
+    SUM(FactProductionLog[DownTime_Minutes]) * 60,
+    AVERAGE(FactProductionLog[IdealCycleTime_Seconds])
+)</code></pre>
+
+                <h4>Metric 4: Top Downtime Reason</h4>
+                <div class="definition">
+                    <p><strong>Definition:</strong> The single most frequent or impactful reason causing downtime.</p>
+                </div>
+                <pre><code>Top Downtime Reason = 
+VAR TopEvent =
+    TOPN(
+        1,
+        FactDowntime,
+        FactDowntime[DurationHours], DESC
+    )
+RETURN
+    MAXX(
+        TopEvent,
+        RELATED(DimDowntimeReason[ReasonDescription])
+    )</code></pre>
+
+                <h4>Metric 5: Availability Loss (hrs)</h4>
+                <div class="definition">
+                    <p><strong>Definition:</strong> Total hours lost when machines were planned to run but were stopped.</p>
+                </div>
+                <pre><code>Availability Loss (hrs) = 
+SUM(FactProductionLog[DownTime_Minutes]) / 60</code></pre>
+            </div>
+
+            <hr>
+
+            <div id="shift-performance">
+                <h3>Shift Performance</h3>
+
+                <h4>DAX Formula: overall_oee_75_color</h4>
+                <pre><code>overall_oee_75_color = IF( [Overall OEE] >= 0.75 , 1 , 0 )</code></pre>
+            </div>
+        </div>
+
+
+    </div>
+</body>
+</html>
